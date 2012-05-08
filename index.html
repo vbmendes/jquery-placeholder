@@ -1,0 +1,18 @@
+<!doctype html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="jquery-placeholder.css" />
+    </head>
+    <body>
+        <input type="text" placeholder="Digite seu nome" name="oi" id="field1"/>
+        <input type="text" placeholder="Digite seu email" name="oi" id="field2"/>
+        <input type="text" placeholder="Digite seu telefone" name="oi" id="field3"/>
+        <script src="jquery.min.js"></script>
+        <script src="jquery-placeholder.js"></script>
+        <script>
+            $('input').placeholder();
+            $('#field3').placeholderChange('oi');
+        </script>
+    </body>
+</html>
