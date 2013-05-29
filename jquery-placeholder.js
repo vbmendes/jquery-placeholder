@@ -13,10 +13,8 @@
       };
 
   function Plugin( element, options ) {
-    this.element = element;
-
+    this.element = $(element);
     this.options = $.extend( {}, defaults, options) ;
-
     this._defaults = defaults;
     this._name = pluginName;
 
@@ -24,22 +22,20 @@
   }
 
   Plugin.prototype.init = function () {
-    var $element = $(this.element),
-      placeholder = $element.attr('placeholder'),
+    var placeholder = this.element.attr('placeholder'),
       $wrapper = $('<span class="placeholder-wrapper"></span>'),
-      $label = $('<label class="placeholder-label" for="'+$element.attr('id')+'">'+placeholder+'</label>'),
+      $label = $('<label class="placeholder-label" for="'+this.element.attr('id')+'">'+placeholder+'</label>'),
       toggleLabel;
 
-    $element.attr('placeholder', '');
+    this.element.attr('placeholder', '');
 
-    $wrapper.insertBefore($element);
-    $wrapper.append($label);
-    $wrapper.append($element);
+    $wrapper.insertBefore(this.element)
+      .append($label, this.element);
 
-    toggleLabel = function toggleLabel(){
-      var input = $(this);
+    var toggleLabel = function toggleLabel(){
+      var $input = $(this);
       setTimeout(function() {
-          if (!input.val()) {
+          if (! $input.val()) {
             $wrapper.removeClass('placeholder-filled');
           } else {
             $wrapper.addClass('placeholder-filled');
@@ -47,17 +43,16 @@
       }, 0);
     };
 
-    $element.on('focus', function(event) {
+    this.element.on('focus', function() {
       $wrapper.addClass('placeholder-focus');
-    }).on('blur', function(event) {
+    }).on('blur', function() {
       $wrapper.removeClass('placeholder-focus');
-    }).on('keydown', toggleLabel).on('paste', toggleLabel);
+    }).on('keydown', toggleLabel)
+      .on('paste', toggleLabel);
   };
 
   Plugin.prototype.changePlaceholder = function (placeholder) {
-    var $element = $(this.element),
-      $label = $element.parent().children('label');
-    $label.html(placeholder);
+    this.element.siblings('label').html(placeholder);
   };
 
   $.fn[pluginName] = function ( options ) {
